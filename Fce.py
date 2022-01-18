@@ -1,4 +1,4 @@
-import random
+from os import name
 
 
 class adfgvx():
@@ -133,7 +133,66 @@ class adfgvx():
             self.output += char
 
 
-            
-#test = adfgvx("PRILIS ZLUTOUCKY KUN UPEL DABELSKE ODY", ['H', 'O', 'V', 'C', 'L', 'A', 'Y', 'M', 'W', 'N', 'G', 'U', 'Q', 'I', 'R', 'P', 'S', 'D', 'X', 'F', 'T', 'E', 'Z', 'B', 'K', " ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"], "Pepa").output
-#print(test)
-#print(adfgvx(test, ['H', 'O', 'V', 'C', 'L', 'A', 'Y', 'M', 'W', 'N', 'G', 'U', 'Q', 'I', 'R', 'P', 'S', 'D', 'X', 'F', 'T', 'E', 'Z', 'B', 'K', " ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"], "Pepa", False).output)
+def genKeyPicture(nameKey1, key1, nameKey2, key2, nameSpace, space):
+    size = 5
+    if len(key1) == 36:
+        size = 6
+    bgCol = "#201e1b"
+    bg2Col="#acb1aa"
+    borderCol = "#3fa108"
+    fontWhite = "#e4f8ff"
+    fontBlack = "#1a1512"
+    Spc = " " * 4
+    svg = "<?xml version='1.0' standalone='yes'?>\n" \
+        f"{Spc}<svg version='1.1'\n"\
+        f"{Spc * 2}width='{size * 100 + 10}' height='1000'\n"\
+        f"{Spc * 2}xmlns='http://www.w3.org/2000/svg'>\n\n"\
+        f"{Spc}<style type='text/css'>\n"\
+        f"{Spc * 2}@font-face "\
+        "{\n"\
+        f"{Spc * 3}font-family: 'Fira Code', monospace;\n"\
+        f"{Spc * 3}rc: url('fonts/FiraCode-Medium.ttf');\n"\
+        f"{Spc * 2}"\
+        "}\n"\
+        f"{Spc}</style>\n\n"\
+        f"{Spc}<rect width='{size * 100 + 10}' height='{size * 100 + 480}' x='0' y='0' fill='{bg2Col}'/>\n\n"\
+        f"{Spc}<text x='{(size * 100 + 10) /2 }' y='{40}' font-size='48'"\
+        f" dominant-baseline='middle' text-anchor='middle' ext-anchor='middle' font-family="\
+        f"'Fira Code' fill='{fontBlack}'>{nameKey1}</text>\n\n"\
+        f"{Spc}<rect width='{size}00' height='{size}00' x='5' y='75' fill='{bgCol}'/>\n\n"
+    for i in range(size):
+        for j in range(size):
+            svg += f"{Spc}<rect width='100' height='100' x='{i * 100+5}' y='{j * 100+75}'"\
+                    f" fill='{bgCol}' stroke='{borderCol}' stroke-width='10'/>\n" \
+                    f"{Spc}<text x='{i * 100 + 39}' y='{j * 100 + 142}' font-size='48'"\
+                    "ext-anchor='middle' font-family="\
+                    f"'Fira Code' fill='{fontWhite}'>{key1[i * size + j]}</text>\n"
+    
+    svg += f"\n{Spc}<text x='{(size * 100 + 10) /2 }' y='{140 + 100 * size}' font-size='48'"\
+        f" dominant-baseline='middle' text-anchor='middle' ext-anchor='middle' font-family="\
+        f"'Fira Code' fill='{fontBlack}'>{nameKey2}</text>\n\n"\
+        f"{Spc}<rect width='{size * 100}' height='100' x='{5}' y='{175 + 100 * size}'"\
+        f" fill='{bgCol}' stroke='{borderCol}' stroke-width='10'/>\n" \
+        f"{Spc}<text x='{(size * 100 + 10) /2 }' y='{225 + 100 * size}' font-size='48'"\
+        f" dominant-baseline='middle' text-anchor='middle' ext-anchor='middle' font-family="\
+        f"'Fira Code' fill='{fontWhite}'>{key2}</text>\n\n"\
+        f"{Spc}<text x='{(size * 100 + 10) /2 }' y='{340 + 100 * size}' font-size='48'"\
+        f" dominant-baseline='middle' text-anchor='middle' ext-anchor='middle' font-family="\
+        f"'Fira Code' fill='{fontBlack}'>{nameSpace}</text>\n\n"\
+        f"{Spc}<rect width='{size * 100}' height='100' x='{5}' y='{375 + 100 * size}'"\
+        f" fill='{bgCol}' stroke='{borderCol}' stroke-width='10'/>\n" \
+        f"{Spc}<text x='{(size * 100 + 10) /2 }' y='{425 + 100 * size}' font-size='48'"\
+        f" dominant-baseline='middle' text-anchor='middle' ext-anchor='middle' font-family="\
+        f"'Fira Code' fill='{fontWhite}'>{space}</text>\n\n"\
+        "</svg>"
+    return svg
+
+def ToSysPath(file):
+    # windows
+    if name == "nt":
+        return file[8:]
+    # unix
+    else:
+        return file[7:]
+
+

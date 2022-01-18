@@ -15,6 +15,7 @@ GridLayout {
         makeAlpha()
     }
 
+
     RowLayout {
         height: 24
         Layout.columnSpan: 2
@@ -314,6 +315,7 @@ GridLayout {
                     key2five.text = myKey
                     key2five.cursorPosition = tmp
                 }
+                canIUseBtn()
             }
         }
 
@@ -412,108 +414,116 @@ GridLayout {
         } 
 
         // file / text
-        StackLayout {
+        StackView {
+            id: stackFT
             width: 200
             height: 100
             Layout.minimumHeight: 100
             Layout.maximumHeight: 100
             Layout.fillWidth: true
             Layout.fillHeight: false
-            currentIndex: textFileTab.currentIndex
-
-            Flickable {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                TextArea.flickable: TextArea {
-                    id: inputText
-                    visible: true
-                    selectByMouse: true
-                    color: myWhiteFont
-                    enabled: activeWindow
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    wrapMode: Text.WrapAnywhere
-                    textFormat: Text.AutoText
-                    placeholderTextColor: Qt.darker(myWhiteFont, 2)
-                    font.family: "Roboto Medium"
-                    font.hintingPreference: Font.PreferFullHinting
-                    font.capitalization: Font.AllUppercase
-                    placeholderText: nameTypeHere
-                    background: Rectangle {
-                        color: myBackground
-                        radius: 8
-                    }
-                    onTextChanged: {
-                        let tmp = inputText.cursorPosition
-                        let nl = false
-                        if (inputText.text.includes("\n") || inputText.text.includes("\t")) {
-                            inputText.text = inputText.text.replace("\n", "")
-                            inputText.text = inputText.text.replace("\t", "")
-                            nl = true
-                        }
-                        let myinputText = inputText.text
-                        myinputText = myinputText.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-                        myinputText = myinputText.toUpperCase()
-                        inputText.text = myinputText
-                        if (nl) {
-                            inputText.cursorPosition = tmp - 1
-                        } else {
-                            inputText.cursorPosition = tmp
-                        }
-                    }
+            clip:true
+            initialItem:textFT
+        
+        }
+        Flickable {
+            id: textFT
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            visible: true
+            TextArea.flickable: TextArea {
+                id: inputText
+                visible: true
+                selectByMouse: true
+                color: myWhiteFont
+                enabled: activeWindow
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                wrapMode: Text.WrapAnywhere
+                textFormat: Text.AutoText
+                placeholderTextColor: Qt.darker(myWhiteFont, 2)
+                font.family: "Roboto Medium"
+                font.hintingPreference: Font.PreferFullHinting
+                font.capitalization: Font.AllUppercase
+                placeholderText: nameTypeHere
+                background: Rectangle {
+                    color: myBackground
+                    radius: 8
                 }
-                ScrollBar.vertical: ScrollBar {}
-
+                onTextChanged: {
+                    let tmp = inputText.cursorPosition
+                    let nl = false
+                    if (inputText.text.includes("\n") || inputText.text.includes("\t")) {
+                        inputText.text = inputText.text.replace("\n", "")
+                        inputText.text = inputText.text.replace("\t", "")
+                        nl = true
+                    }
+                    let myinputText = inputText.text
+                    myinputText = myinputText.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                    myinputText = myinputText.toUpperCase()
+                    inputText.text = myinputText
+                    if (nl) {
+                        inputText.cursorPosition = tmp - 1
+                    } else {
+                        inputText.cursorPosition = tmp
+                    }
+                    canIUseBtn()
+                }
             }
-
-            ColumnLayout {
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-
-                Button {
-                    id: btnChoseFile
-                    enabled: activeWindow
-                    Layout.topMargin: 16
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
-                    background: Rectangle {
-                        anchors.fill: parent
-                        color: btnChoseFile.down ? myHighLighht : (btnChoseFile.hovered && activeWindow ? Qt.lighter(myBackground, 2) : myBackground)
-                        radius: 8
-
-                        Label {
-                            text: nameChoseFile
-                            anchors.fill: parent
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                            font.family: "Roboto Medium"
-                            color: myWhiteFont
-                        }
-                    }
-                    onClicked: {
-                        fileDialog.visible = true
-                        if (spcCharErr.visible || keyErrText.visible) {err = true} else {err = false}
-                    }
-                }
-
-
-                Label {
-                    id: fileState
-                    Layout.fillWidth: true
-                    text: nameFileUnchosed
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    topPadding: 8
-                    bottomPadding: 16
-                    font.family: "Poppins Medium"
-                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                    color: myUpperBar
-                }
-                
-            }
+            ScrollBar.vertical: ScrollBar {}
 
         }
+
+        ColumnLayout {
+            id: fileFT
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            visible: false
+
+            Button {
+                id: btnChoseFile
+                enabled: activeWindow
+                Layout.topMargin: 16
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                background: Rectangle {
+                    anchors.fill: parent
+                    color: btnChoseFile.down ? myHighLighht : (btnChoseFile.hovered && activeWindow ? Qt.lighter(myBackground, 2) : myBackground)
+                    radius: 8
+
+                    Label {
+                        text: nameChoseFile
+                        anchors.fill: parent
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        font.family: "Roboto Medium"
+                        color: myWhiteFont
+                    }
+                }
+                onClicked: {
+                    fileDialog.visible = true
+                    canIUseBtn()
+                }
+            }
+
+
+            Label {
+                id: fileState
+                Layout.fillWidth: true
+                text: nameFileUnchosed
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                topPadding: 8
+                bottomPadding: 16
+                font.family: "Poppins Medium"
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                color: myUpperBar
+            }
+            
+        }
+
+        
 
         // text / file button tab
         TabBar {
@@ -523,7 +533,7 @@ GridLayout {
             enabled: activeWindow
             position: TabBar.Footer
             font.family: "Roboto Medium"
-            Layout.topMargin: -6
+            Layout.topMargin: -9
             Layout.rightMargin: 4
             Layout.leftMargin: 4
             Layout.alignment: Qt.AlignLeft | Qt.AlignTop
@@ -550,8 +560,9 @@ GridLayout {
 
                     Rectangle {
                         height: 4
-                        color: textFileTab.currentIndex == 0 ? myHighLighht : (parent.parent.hovered && activeWindow ? Qt.darker(myBackground2, 1.25) :
-                                                                                                                       myBackground2)
+                        color: textFileTab.currentIndex == 0 ? myHighLighht : 
+                                (parent.parent.hovered && activeWindow ? 
+                                Qt.darker(myBackground2, 1.25) : myBackground2)
                         radius: 4
                         anchors.left: parent.left
                         anchors.right: parent.right
@@ -562,7 +573,7 @@ GridLayout {
                     }
                 }
                 onClicked: {
-                    
+                    stackFT.pop(textFT)
                 }
             }
 
@@ -598,7 +609,7 @@ GridLayout {
                     }
                 }
                 onClicked: {
-
+                    stackFT.push(fileFT)
                 }
             }
         }
@@ -716,11 +727,14 @@ GridLayout {
                             color: myBackground
                         }
                     }
+                    onActivated: {
+                        specChar = chosSpecCh.currentText
+                    }
                 }
             }
         }
 
-        // encode button
+        // encode/decode button
         Button {
             Layout.fillHeight: true
             Layout.topMargin: 0
@@ -730,14 +744,116 @@ GridLayout {
             Layout.minimumHeight: 36
             Layout.maximumHeight: 36
             Layout.maximumWidth: key2five.width
-            enabled: true
+            enabled: canIUseBtn()
             onClicked: {
+                let myKey1 = []
+                for (let i = 0; i < 25; i++) {
+                    myKey1.push(key1five.children[i].text)
+                }
+                key1 = myKey1
+                if (encOrDec) { //decode
+
+                    if (textFileTab.currentIndex) { //file
+                        let newText = myInputText
+                        if (chosAbc.currentIndex == 0) {
+                            while (newText.includes("J")) {
+                                newText = newText.replace("J", "I")
+                            }
+                        } else if (chosAbc.currentIndex == 1) {
+                            while (newText.includes("W")) {
+                                newText = newText.replace("W", "V")
+                            }
+                        } else {
+                            while (newText.includes("Q")) {
+                                newText = newText.replace("Q", "K")
+                            }
+                        }
+                        myData.decodeText(newText, myKey1, key2five.text, specChar)
+                    } else { //text
+                        let newText = inputText.text
+                        if (chosAbc.currentIndex == 0) {
+                            while (newText.includes("J")) {
+                                newText = newText.replace("J", "I")
+                            }
+                        } else if (chosAbc.currentIndex == 1) {
+                            while (newText.includes("W")) {
+                                newText = newText.replace("W", "V")
+                            }
+                        } else {
+                            while (newText.includes("Q")) {
+                                newText = newText.replace("Q", "K")
+                            }
+                        }
+                        myData.decodeText(newText, myKey1, key2five.text, specChar)
+                    }
+                } else { //encode
+                    if (textFileTab.currentIndex) { //file
+                        console.log("encode file:");
+                        let newText = myInputText
+                        if (chosAbc.currentIndex == 0) {
+                            while (newText.includes("J")) {
+                                newText = newText.replace("J", "I")
+                            }
+                        } else if (chosAbc.currentIndex == 1) {
+                            while (newText.includes("W")) {
+                                newText = newText.replace("W", "V")
+                            }
+                        } else {
+                            while (newText.includes("Q")) {
+                                newText = newText.replace("Q", "K")
+                            }
+                        }
+                        console.log(newText);
+                        myData.encodeText(newText, myKey1, key2five.text, specChar)
+                    } else { //text
+                        let newText = inputText.text
+                        if (chosAbc.currentIndex == 0) {
+                            while (newText.includes("J")) {
+                                newText = newText.replace("J", 'I')
+                            }
+                        } else if (chosAbc.currentIndex == 1) {
+                            while (newText.includes("W")) {
+                                newText = newText.replace("W", "V")
+                            }
+                        } else {
+                            while (newText.includes("Q")) {
+                                newText = newText.replace("Q", "K")
+                            }
+                        }
+                        myData.encodeText(newText, myKey1, key2five.text, specChar)
+                    }
+                }
+                sol.visible = true
+            }
+            ToolTip {
+                text: nameWhyEnDe
+                visible: parent.hovered && !parent.enabled
+                background: Rectangle {
+                    color: myBackground2
+                    border.color: myHighLighht
+                    radius: 4
+                    
+                    Label {
+                        color: "#F9D800"
+                        font.pointSize: 12
+                        font.family: "Roboto Medium"
+                        anchors.fill: parent
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        anchors.rightMargin: 2
+                        anchors.leftMargin: 2
+                        anchors.bottomMargin: 2
+                        anchors.topMargin: 2
+                    }
+                    
+                }
                 
             }
             background: Rectangle {
                 anchors.fill: parent
-                color: parent.down ? myHighLighht : (parent.hovered ? Qt.lighter(myBackground, 2) : myBackground)
+                color: parent.down ? myHighLighht : (parent.hovered && parent.endable ? Qt.lighter(myBackground, 2) : myBackground)
                 radius: 8
+
 
                 Label{
                     text: encOrDec? nameDecode : nameEncode 
@@ -745,12 +861,15 @@ GridLayout {
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     font.family: "Roboto Medium"
-                    color: parent.parent.down ? myUpperBar : (parent.parent.hovered ? Qt.darker(myWhiteFont, 1.25) : myWhiteFont)
+                    color: parent.parent.down ? myUpperBar : (parent.parent.hovered && parent.endable ? Qt.darker(myWhiteFont, 1.25) : myWhiteFont)
                 }
             }
         }
         
-
+        Solution {
+            id: sol
+            visible: false
+        }
     }
 
     function makeFive(){
@@ -814,6 +933,7 @@ GridLayout {
 
     function veri(base, myAbc) {
         let count = 0;
+        canIUseBtn()
         for (let j = 0;j < myAbc.length; j++) {
             count = 0
             for (let i = 0; i < myAbc.length; i++) {
@@ -839,6 +959,56 @@ GridLayout {
                     }
                 }
             }
+        }
+    }
+
+    function canIUseBtn() {
+        for (let i = 0; i < 25; i++) {
+            if (abcHere.children[i].myCol == myUpperBar || abcHere.children[i].myCol == myCloseBtn) {
+                return false
+            }
+        }
+        if (key2five.text == "") {
+            return false
+        }
+        if (textFileTab.currentIndex == 0 && inputText.text == ""){
+            return false
+        }
+        if (textFileTab.currentIndex && (fileState.color == myCloseBtn || fileState.text == nameFileUnchosed)) {
+            return false
+        }
+        return true
+    }
+
+    FileDialog {
+        id: fileDialog
+        visible: false
+        nameFilters: [ "Text files (*.txt)"]
+        onAccepted: {
+            fileState.text = nameFileUnchosed
+            fileState.color = myUpperBar
+            let url = String(fileDialog.currentFile)
+            let index = 0
+            let urlCh = url.split("")
+            for (let i =0; i <url.length; i++){
+                if(urlCh[i] === "/") {index = i + 1;}
+            }
+            let filename = url.substring(index);
+            fileState.text = filename
+            myData.verifyText(url)
+            if (myInputText == ""){
+                fileState.text = nameEmpty
+                fileState.color = myCloseBtn
+            } else {
+                myInputText = myInputText.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                myInputText = myInputText.toUpperCase()
+            }
+            canIUseBtn()
+        }
+        onRejected: {
+            fileState.text = nameFileUnchosed
+            myInputText = ""
+            canIUseBtn()
         }
     }
 }

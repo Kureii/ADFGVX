@@ -32,10 +32,18 @@ Window {
     property string nameEncode: "Encode"
     property string nameDecode: "Decode"
     property string nameSpecChar: "Char to replace spaces: "
+    property string nameWhyEnDe: "You must fill all field for endable this button"
+    property string nameEmpty: "File is empty."
+    property string nameEncodeTxt: "Encoded text"
+    property string nameOpenText: "Open text"
+    property string nameSaveTxt: "Save text"
+    property string nameSaveKeys: "Save keys"
+    property string nameSlctTXT: "Text file (*.txt)"
+    property var nameSaveImg: ["SVG (*.svg)", "PNG (*.png)", "JPEG (*.jpg)"]
 
     // lists
     property var key1: []
-    property var specChar: []
+    property var specChar: "A"
 
     // Alphabets
     readonly property string alpha: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -52,6 +60,13 @@ Window {
     readonly property color myCloseImg: "#fcf8fe"
     readonly property color myCloseImgUnA: "#878589"
     readonly property color myCloseBtn: "#de2f05"
+
+    property string myInputText: ""
+    property string solution: ""
+    property var solKey1: []
+    property string solKey2: ""
+    property string solText: ""
+    property string solSpace: ""
 
     function makeBig() {
         window.x = 12
@@ -308,6 +323,7 @@ Window {
                         Layout.fillWidth: true
                         enabled: true
                         onClicked: {
+                            myData.getLang("eng_US")
                             timeline.enabled = true
                             winSize.running = true
                         }
@@ -399,6 +415,7 @@ Window {
                             }
                         }
                         onClicked: {
+                            myData.getLang("cs_CZ")
                             timeline.enabled = true
                             winSize.running = true
                         }
@@ -445,6 +462,78 @@ Window {
         target: myData
         function onRandomized(list) {
             key1 = list
+        }
+        function onSolution(x) {
+            solution = x
+        }
+        function onKey1(x) {
+            solKey1 = x
+        }
+        function onKey2(x) {
+            solKey2 = x
+        }
+        function onText(x) {
+            solText = x
+        }
+        function onSpace(x) {
+            solSpace = x
+        }
+        function onMyInputText(x) {
+            myInputText = x
+        }
+        function onNameRandom(x) {
+        nameRandom = x
+        }
+        function onNameKey1(x) {
+        nameKey1 = x
+        }
+        function onNameKey2(x) {
+        nameKey2 = x
+        }
+        function onNameTypeHere(x) {
+        nameTypeHere = x
+        }
+        function onNameChoseFile(x) {
+        nameChoseFile = x
+        }
+        function onNameFile(x) {
+        nameFile = x
+        }
+        function onNameFileUnchosed(x) {
+        nameFileUnchosed = x
+        }
+        function onNameSpcRpl(x) {
+        nameSpcRpl = x
+        }
+        function onNameEncode(x) {
+        nameEncode = x
+        }
+        function onNameDecode(x) {
+        nameDecode = x
+        }
+        function onNameSpecChar(x) {
+        nameSpecChar = x
+        }
+        function onNameWhyEnDe(x) {
+        nameWhyEnDe = x
+        }
+        function onNameEmpty(x) {
+        nameEmpty = x
+        }
+        function onNameEncodeTxt(x) {
+        nameEncodeTxt = x
+        }
+        function onNameOpenText(x) {
+        nameOpenText = x
+        }
+        function onNameSaveTxt(x) {
+        nameSaveTxt = x
+        }
+        function onNameSaveKeys(x) {
+        nameSaveKeys = x
+        }
+        function onNameSlctTXT(x) {
+        nameSlctTXT = x
         }
     }
 
