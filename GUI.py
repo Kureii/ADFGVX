@@ -7,6 +7,7 @@ from PySide6.QtCore import QObject, Signal, Slot
 from PySide6.QtGui import *
 from PySide6.QtQml import *
 from PySide6.QtWidgets import *
+from cairosvg import svg2png
 
 import Fce
 from Lang import appLang
@@ -58,6 +59,20 @@ class GetData(QObject):
             content = f.read()
         self.myInputText.emit(content)
 
+    @Slot(str, str)
+    def getSaveFile(self, file, text):
+        file = Fce.ToSysPath(file)
+        with open(file, "w") as f:
+            f.write(text)
+
+    @Slot(str, str, list, str, str, str, str)
+    def getSaveImg(self, file, nameKey1, key1, nameKey2, key2, nameSpecChar, specChar):
+        file = Fce.ToSysPath(file)
+        print(file)
+        svg = Fce.genKeyPicture(nameKey1, key1, nameKey2, key2, nameSpecChar, specChar)
+        with open(file, "w") as s:
+            s.write(svg)
+
     nameRandom  = Signal(str)
     nameKey1  = Signal(str)
     nameKey2 = Signal(str)
@@ -76,6 +91,8 @@ class GetData(QObject):
     nameSaveTxt = Signal(str)
     nameSaveKeys = Signal(str)
     nameSlctTXT = Signal(str)
+    nameTTRnd = Signal(str)
+    nameAlpha = Signal(str)
 
     @Slot(str)
     def getLang(self, lang):
@@ -98,6 +115,8 @@ class GetData(QObject):
         self.nameSaveTxt.emit(myLang['nameSaveTxt'])
         self.nameSaveKeys.emit(myLang['nameSaveKeys'])
         self.nameSlctTXT.emit(myLang['nameSlctTXT'])
+        self.nameTTRnd.emit(myLang['nameTTRnd'])
+        self.nameAlpha.emit(myLang['nameAlpha'])
 
 class runQML():
     def __init__(self):

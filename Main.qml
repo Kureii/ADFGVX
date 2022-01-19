@@ -39,7 +39,9 @@ Window {
     property string nameSaveTxt: "Save text"
     property string nameSaveKeys: "Save keys"
     property string nameSlctTXT: "Text file (*.txt)"
-    property var nameSaveImg: ["SVG (*.svg)", "PNG (*.png)", "JPEG (*.jpg)"]
+    property var nameSaveImg: ["SVG (*.svg)"]
+    property string nameTTRnd : "You must fill alphabet"
+    property string nameAlpha : "Alphabet"
 
     // lists
     property var key1: []
@@ -534,6 +536,12 @@ Window {
         }
         function onNameSlctTXT(x) {
         nameSlctTXT = x
+        }
+        function onNameTTRnd(x) {
+            nameTTRnd = x
+        }
+        function onNameAlpha(x) {
+            nameAlpha = x
         }
     }
 

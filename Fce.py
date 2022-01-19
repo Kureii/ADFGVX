@@ -147,14 +147,6 @@ def genKeyPicture(nameKey1, key1, nameKey2, key2, nameSpace, space):
         f"{Spc}<svg version='1.1'\n"\
         f"{Spc * 2}width='{size * 100 + 10}' height='1000'\n"\
         f"{Spc * 2}xmlns='http://www.w3.org/2000/svg'>\n\n"\
-        f"{Spc}<style type='text/css'>\n"\
-        f"{Spc * 2}@font-face "\
-        "{\n"\
-        f"{Spc * 3}font-family: 'Fira Code', monospace;\n"\
-        f"{Spc * 3}rc: url('fonts/FiraCode-Medium.ttf');\n"\
-        f"{Spc * 2}"\
-        "}\n"\
-        f"{Spc}</style>\n\n"\
         f"{Spc}<rect width='{size * 100 + 10}' height='{size * 100 + 480}' x='0' y='0' fill='{bg2Col}'/>\n\n"\
         f"{Spc}<text x='{(size * 100 + 10) /2 }' y='{40}' font-size='48'"\
         f" dominant-baseline='middle' text-anchor='middle' ext-anchor='middle' font-family="\

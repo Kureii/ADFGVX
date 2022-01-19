@@ -31,7 +31,8 @@ TextField {
             myTxt = myField.text
         }
         if(fiveSixTab.currentIndex) {
-
+            let myAbc = alphaSix.text
+            veri(key1six, myAbc)
         } else {
             let myAbc = ""
             if (chosAbc.currentIndex == 0) {

@@ -646,7 +646,7 @@ GridLayout {
                     Layout.fillWidth: true
                     currentIndex: 0
                     font.family: "Poppins Medium"
-                    model: Array.from(solidEngAlpha)
+                    model: chosAbc.currentIndex == 0 ? Array.from(solidEngAlpha) : (chosAbc.currentIndex == 1 ? Array.from(solidCsVAlpha) : Array.from(solidCsKAlpha))
                     
                     delegate: ItemDelegate {
                         width: chosSpecCh.width - 10
@@ -824,6 +824,8 @@ GridLayout {
                     }
                 }
                 sol.visible = true
+                activeWindow = false
+
             }
             ToolTip {
                 text: nameWhyEnDe

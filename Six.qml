@@ -26,10 +26,69 @@ GridLayout {
 
 
         // alphabet
-        RowLayout {
-            id: abcHere2
+        TextField {
+            id: alphaSix
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             Layout.fillHeight: true
             Layout.fillWidth: true
+            Layout.leftMargin: 0
+            Layout.rightMargin: 0
+            Layout.maximumHeight: 24
+            Layout.minimumHeight: 24
+            selectByMouse: true
+            color: myWhiteFont
+            text: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            enabled: activeWindow
+            horizontalAlignment: Text.AlignHCenter
+            font.capitalization: Font.AllUppercase
+            font.family: "Roboto Medium"
+            placeholderTextColor: Qt.darker(myWhiteFont, 2)
+            placeholderText: nameTypeHere
+            validator: RegularExpressionValidator { regularExpression:  /^[a-zA-Zá-žÁ-Ž0-9 .-_/!?()]+$/ }
+            background: Rectangle {
+                id: key2sixVer2
+                color: myBackground
+                border.width: 3
+                border.color: "transparent"
+                radius: 8
+            }
+            
+            onTextChanged: {
+             if(alphaSix.text != "") {
+                let tmp = alphaSix.cursorPosition
+                let myKey = alphaSix.text
+
+                myKey = myKey.toUpperCase()
+                myKey = String.prototype.concat(...new Set(myKey))
+                if (myKey.length == 0) {
+                    key2sixVer2.border.color = myCloseBtn
+                } else if (myKey.length > 0 && myKey.length < 36){ 
+                    key2sixVer2.border.color = "#F9D800"
+                } else {
+                    key2sixVer2.border.color = myHighLighht
+                    myKey = myKey.substring(0,36)
+                }
+                alphaSix.text = myKey
+                alphaSix.cursorPosition = tmp
+                }   
+            }
+        }
+
+        Label {
+            font.family: "Roboto Medium"
+            color: myUpperBar
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.maximumHeight: 16
+            Layout.topMargin: 0
+            text: newText()
+            function newText() {
+                let i = alphaSix.text
+                let len = i.length
+                return len + "/36"
+            }
         }
         
     }
@@ -97,10 +156,34 @@ GridLayout {
             Layout.fillWidth: true
             Layout.minimumHeight: 24
             Layout.maximumWidth: key1size2.width
-            enabled: true
+            enabled: alphaSix.text.length == 36
+            ToolTip {
+                text: nameTTRnd
+                visible: parent.hovered && !parent.enabled
+                background: Rectangle {
+                    color: myBackground2
+                    border.color: myHighLighht
+                    radius: 4
+                    
+                    Label {
+                        color: "#F9D800"
+                        font.pointSize: 12
+                        font.family: "Roboto Medium"
+                        anchors.fill: parent
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        anchors.rightMargin: 2
+                        anchors.leftMargin: 2
+                        anchors.bottomMargin: 2
+                        anchors.topMargin: 2
+                    }
+                    
+                }
+                
+            }
             background: Rectangle {
                 anchors.fill: parent
-                color: parent.down ? myHighLighht : (parent.hovered ? Qt.lighter(myBackground, 2) : myBackground)
+                color: parent.down ? myHighLighht : (parent.hovered && parent.endable ? Qt.lighter(myBackground, 2) : myBackground)
                 radius: 8
 
                 Rectangle {
@@ -120,18 +203,12 @@ GridLayout {
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     font.family: "Roboto Medium"
-                    color: parent.parent.down ? myUpperBar : (parent.parent.hovered ? Qt.darker(myWhiteFont, 1.25) : myWhiteFont)
+                    color: parent.parent.down ? myUpperBar : (parent.parent.hovered  && parent.parent.endable ? Qt.darker(myWhiteFont, 1.25) : myWhiteFont)
                 }
             }
             onClicked: {
-                if (chosAbc.currentIndex == 0) {
-                    myData.sendRandom(solidEngAlpha)
-                } else if (chosAbc.currentIndex == 1) {
-                    myData.sendRandom(solidCsVAlpha)
-                } else {
-                    myData.sendRandom(solidCsKAlpha)
-                }
-                for (let i = 0; i < 25; i++) {
+                myData.sendRandom(alphaSix.text)
+                for (let i = 0; i < 36; i++) {
                     key1six.children[i].text = key1[i]
                     key1six.children[i].myCol = myHighLighht
                 }
@@ -144,12 +221,13 @@ GridLayout {
     ColumnLayout{
         Layout.fillHeight: true
         Layout.fillWidth: true
-        Layout.rightMargin: 8
+        Layout.rightMargin: -34
         Layout.bottomMargin: 2
         Layout.leftMargin: -6
         Layout.topMargin: -7
-        Layout.maximumHeight:252
-        Layout.minimumHeight:252
+        Layout.maximumHeight:290
+        Layout.minimumHeight:290
+        Layout.maximumWidth: 270
 
         
         // key 2 text
@@ -349,7 +427,7 @@ GridLayout {
                         inputText2.text = inputText2.text.replace("\t", "")
                         nl = true
                     }
-                    let myinputText = inputText2.text
+                    let myinputText2 = inputText2.text
                     myinputText2 = myinputText2.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
                     myinputText2 = myinputText2.toUpperCase()
                     inputText2.text = myinputText2
@@ -534,7 +612,7 @@ GridLayout {
                     Layout.fillWidth: true
                     currentIndex: 0
                     font.family: "Poppins Medium"
-                    model: Array.from(solidEngAlpha)
+                    model: Array.from(alphaSix.text)
                     
                     delegate: ItemDelegate {
                         width: chosSpecCh2.width - 10
@@ -635,7 +713,7 @@ GridLayout {
             enabled: canIUseBtn()
             onClicked: {
                 let myKey1 = []
-                for (let i = 0; i < 25; i++) {
+                for (let i = 0; i < 36; i++) {
                     myKey1.push(key1six.children[i].text)
                 }
                 key1 = myKey1
@@ -654,6 +732,7 @@ GridLayout {
                     }
                 }
                 sol2.visible = true
+                activeWindow = false
             }
             ToolTip {
                 text: nameWhyEnDe
@@ -696,7 +775,7 @@ GridLayout {
             }
         }
         
-        Solution {
+        SolutionSix {
             id: sol2
             visible: false
         }
@@ -770,17 +849,17 @@ GridLayout {
                 if (count > 1) {
                     if (base.children[i].text == myAbc[j]) {
                         base.children[i].myCol = myCloseBtn
-                        abcHere2.children[j].color = myCloseBtn
+                        //abcHere2.children[j].color = myCloseBtn
                     }
                 } else  if (count == 1) {
                     if (base.children[i].text == myAbc[j]) {
                         base.children[i].myCol = myHighLighht
-                        abcHere2.children[j].color = myHighLighht
+                        //abcHere2.children[j].color = myHighLighht
                     }
                 } else {
                     if (key1six.children[i].text == "" || !myAbc.includes(key1six.children[i].text)) {
                         base.children[i].myCol = "transparent"
-                        abcHere2.children[j].color = myUpperBar
+                        //abcHere2.children[j].color = myUpperBar
                     }
                 }
             }
@@ -788,15 +867,15 @@ GridLayout {
     }
 
     function canIUseBtn() {
-        for (let i = 0; i < 25; i++) {
-            if (abcHere2.children[i].myCol == myUpperBar || abcHere2.children[i].myCol == myCloseBtn) {
+        for (let i = 0; i < 36; i++) {
+            if (key1six.children[i].myCol == "transparent" || key1six.children[i].myCol == myCloseBtn) {
                 return false
             }
         }
         if (key2six.text == "") {
             return false
         }
-        if (textFileTab2.currentIndex == 0 && inputText.text == ""){
+        if (textFileTab2.currentIndex == 0 && inputText2.text == ""){
             return false
         }
         if (textFileTab2.currentIndex && (fileState2.color == myCloseBtn || fileState2.text == nameFileUnchosed)) {

@@ -253,7 +253,7 @@ Window {
                                 selectByMouse: true
                                 visible: true
                                 readOnly: true
-                                text: fiveSixTab.currentIndex ? key2six.text : key2five.text
+                                text: key2five.text
                                 color: myWhiteFont
                                 horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
@@ -467,8 +467,13 @@ Window {
             nameFilters: [nameSlctTXT]
             fileMode: FileDialog.SaveFile
             onAccepted: {
-                myData.getSaveFile(saveDialog.currentFile)
-                winSol.close()
+                let text;
+                if (encOrDec) {
+                    text = solText
+                } else {
+                    text =solution
+                }
+                myData.getSaveFile(saveDialog.currentFile, text)
             }
             onRejected: saveDialog.currentFile = ""
         }
@@ -478,8 +483,7 @@ Window {
             nameFilters: nameSaveImg
             fileMode: FileDialog.SaveFile
             onAccepted: {
-                myData.getSaveImg(saveDialog.currentFile)
-                winSol.close()
+                myData.getSaveImg(saveDialog.currentFile, nameKey1, solKey1, nameKey2, solKey2, nameSpecChar, solSpace)
             }
             onRejected: saveDialog.currentFile = ""
         }

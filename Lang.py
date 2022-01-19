@@ -17,6 +17,8 @@ cs_CZ = {
     "nameSaveTxt": "Uložit text",
     "nameSaveKeys": "Uložit klíče",
     "nameSlctTXT": "Textový soubor (*.txt)",
+    "nameTTRnd" : "Musíte první vyplnit abecedu",
+    "nameAlpha" : "Abeceda: "
 }
 eng_US = {
     "nameRandom": "Random",
@@ -37,6 +39,8 @@ eng_US = {
     "nameSaveTxt": "Save text",
     "nameSaveKeys": "Save keys",
     "nameSlctTXT": "Text file (*.txt)",
+    "nameTTRnd" : "You must fill alphabet",
+    "nameAlpha" : "Alphabet: "
 }
 
 
